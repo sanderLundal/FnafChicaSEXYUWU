@@ -6,7 +6,9 @@ using namespace std;
 Texture2D backGroundMainMenu;
 Texture2D backGroundOffice;
 Texture2D thiccChica;
+Texture2D camMap;
 Sound theme;
+Sound windowScare;
 
 float textSize = 100;
 bool maxTextSize = false;
@@ -21,6 +23,7 @@ int officeY;
 int main () {
 
     bool leftLightOn = false;
+    bool rightLightOn = false;
 
     bool hoveringNewGameX = false;
     bool hoveringNewGameY = false;
@@ -34,7 +37,7 @@ int main () {
     const int screenWidth = 1920;
     const int screenHeight = 1080;
 
-    int currentNight;
+    int currentNight = 0;
 
     InitWindow(screenWidth, screenHeight, "My first RAYLIB program!");
     ToggleFullscreen();
@@ -43,10 +46,12 @@ int main () {
     backGroundMainMenu = LoadTexture("./images/Background.png");
     backGroundOffice = LoadTexture("./images/office.png");
     thiccChica = LoadTexture("./images/chica.png");
+    camMap = LoadTexture("./images/camMap.png");
     
-    SetSoundVolume(theme, 1);
     theme = LoadSound("./audio/theme.mp3");
+    windowScare = LoadSound("./audio/WindowScare.mp3");
     PlaySound(theme);
+    SetSoundVolume(theme, 0.25f);
 
     int currentScene = 0;
     
@@ -155,13 +160,24 @@ int main () {
             if(leftLightOn == true){
                 DrawTexture(thiccChica, officeX + 1900, -50, WHITE);
             }
+            if(IsKeyPressed(KEY_RIGHT)){
+                if(leftLightOn == false){
+                    leftLightOn = true;
+                    PlaySound(windowScare);
+                }
+                else if(leftLightOn == true){
+                    leftLightOn = false;
+                }
+            }
 
-            if(IsKeyDown(KEY_RIGHT)){
-                leftLightOn = true;
+            if (IsKeyDown(KEY_APOSTROPHE))
+            {
+                rightLightOn = true;
             }
             else{
-                leftLightOn = false;
+                rightLightOn = false;
             }
+            
 
             if(mousePos.x <= 20){
                 if(officeX < 0){
@@ -172,11 +188,14 @@ int main () {
                 
                 if(officeX > -1235){
                     officeX -= 5;
-                }
-                
+                }   
             }
 
-        }
+            if(mousePos.y > 900){
+                DrawTexture(camMap, 0, 0, WHITE);
+            }
+
+        }   
         EndDrawing();
     }
     UnloadTexture(backGroundMainMenu);
