@@ -7,6 +7,7 @@ Texture2D backGroundMainMenu;
 Texture2D backGroundOffice;
 Texture2D thiccChica;
 Texture2D camMap;
+Texture2D bonnie;
 Sound theme;
 Sound windowScare;
 
@@ -47,6 +48,7 @@ int main () {
     backGroundOffice = LoadTexture("./images/office.png");
     thiccChica = LoadTexture("./images/chica.png");
     camMap = LoadTexture("./images/camMap.png");
+    bonnie = LoadTexture("./images/bonnie.png");
     
     theme = LoadSound("./audio/theme.mp3");
     windowScare = LoadSound("./audio/WindowScare.mp3");
@@ -157,10 +159,23 @@ int main () {
         else if(currentScene == 1){
             DrawTexture(backGroundOffice, officeX, officeY, WHITE);
             
-            if(leftLightOn == true){
+            if(rightLightOn == true){
                 DrawTexture(thiccChica, officeX + 1900, -50, WHITE);
             }
             if(IsKeyPressed(KEY_RIGHT)){
+                if(rightLightOn == false){
+                    rightLightOn = true;
+                    PlaySound(windowScare);
+                }
+                else if(rightLightOn == true){
+                    rightLightOn = false;
+                }
+            }
+
+            if(leftLightOn == true){
+                DrawTexture(bonnie, officeX + 450, 150, WHITE);
+            }
+            if(IsKeyPressed(KEY_LEFT)){
                 if(leftLightOn == false){
                     leftLightOn = true;
                     PlaySound(windowScare);
@@ -168,14 +183,6 @@ int main () {
                 else if(leftLightOn == true){
                     leftLightOn = false;
                 }
-            }
-
-            if (IsKeyDown(KEY_APOSTROPHE))
-            {
-                rightLightOn = true;
-            }
-            else{
-                rightLightOn = false;
             }
             
 
